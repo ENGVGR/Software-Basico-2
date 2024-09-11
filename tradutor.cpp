@@ -61,10 +61,10 @@ string final_text = "section .text\n"
 
                     "mov ecx, 11\n"
                     "mov eax, 0\n\n"
-                    "clear:\n"
+                    "clear1:\n"
                     "mov dword[buffer+eax*4],0\n"
                     "inc eax\n"
-                    "loop clear\n"
+                    "loop clear1\n"
                     "popa\n"
                     "leave\n"
                     "ret                   ; Retorna com a string pronta no buffer \n\n"
@@ -110,10 +110,10 @@ string final_text = "section .text\n"
                     "saida:\n"
                     "mov ecx, 11\n"
                     "mov eax, 0\n"
-                    "clear:\n"
+                    "clear2:\n"
                     "mov dword[buffer+eax*4],0\n"
                     "inc eax\n"
-                    "loop clear\n"
+                    "loop clear2\n"
                     "popa\n"
                     "mov eax, RES\n"
                     "mov dword[ebp + 8], eax\n"
@@ -282,11 +282,11 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (variable_list.find(numbers[index]) != variable_list.end())
         {
-          text[contador] = "MOV EBX, [" + variable_list[numbers[index]] + "]\nIMUL EBX\nCMP IDX, 0\nJNE overflow_handler\n";
+          text[contador] = "MOV EBX, [" + variable_list[numbers[index]] + "]\nIMUL EBX\nCMP EDX, 0\nJNE overflow_handler\n";
         }
         else
         {
-          text[contador] = "MOV EBX, " + to_string(numbers[index]) + "\nIMUL EBX\nCMP IDX, 0\nJNE overflow_handler\n";
+          text[contador] = "MOV EBX, " + to_string(numbers[index]) + "\nIMUL EBX\nCMP EDX, 0\nJNE overflow_handler\n";
         }
         contador += 2;
         break;
