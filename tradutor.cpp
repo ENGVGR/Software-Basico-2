@@ -174,53 +174,6 @@ void translator(string input_file_name, string output_file_name)
 
     size_t index = 0;
 
-    /* APAGAR !!! */
-    while (index < numbers.size())
-    {
-      int current_number = numbers[index];
-      cout << instructions[current_number] << endl;
-      if (current_number == 14)
-      {
-        break;
-      }
-      switch (current_number)
-      {
-      case 0:
-        break;
-
-      /* Copy */
-      case 9:
-        index += 2;
-        contador += 3;
-        break;
-
-      /* Stop */
-      case 14:
-        contador += 1;
-        break;
-
-      /* S_Input */
-      case 15:
-        index += 2;
-        contador += 3;
-        break;
-
-      /* S_Output */
-      case 16:
-        index += 2;
-        contador += 3;
-        break;
-
-      default:
-        index++;
-        contador += 2;
-        break;
-      }
-      index++;
-    }
-
-    index = 0;
-
     /* Encontra o STOP */
     while (index < numbers.size())
     {
@@ -282,12 +235,6 @@ void translator(string input_file_name, string output_file_name)
       index++;
       label_number++;
       contador++;
-    }
-
-    cout << "Lista de variaveis: " << endl;
-    for (auto it = variable_list.begin(); it != variable_list.end(); ++it)
-    {
-      cout << to_string(it->first) + ": " + it->second << endl;
     }
 
     index = 0;
