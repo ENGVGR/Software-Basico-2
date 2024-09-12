@@ -325,12 +325,12 @@ void translator(string input_file_name, string output_file_name)
         if (labels_list.find(numbers[index]) != labels_list.end())
         {
           text[contador] = "CMP EAX, 0\n";
-          text[contador] += "JB " + labels_list[numbers[index]] + "\n";
+          text[contador] += "JL " + labels_list[numbers[index]] + "\n";
         }
         else
         {
           text[contador] = "CMP EAX, 0\n";
-          text[contador] += "JB LABEL" + to_string(label_number) + "\n";
+          text[contador] += "JL LABEL" + to_string(label_number) + "\n";
           labels_list[numbers[index]] = "LABEL" + to_string(label_number);
           label_number++;
         }
@@ -343,12 +343,12 @@ void translator(string input_file_name, string output_file_name)
         if (labels_list.find(numbers[index]) != labels_list.end())
         {
           text[contador] = "CMP EAX, 0\n";
-          text[contador] += "JA " + labels_list[numbers[index]] + "\n";
+          text[contador] += "JG " + labels_list[numbers[index]] + "\n";
         }
         else
         {
           text[contador] = "CMP EAX, 0\n";
-          text[contador] += "JA LABEL" + to_string(label_number) + "\n";
+          text[contador] += "JG LABEL" + to_string(label_number) + "\n";
           labels_list[numbers[index]] = "LABEL" + to_string(label_number);
           label_number++;
         }
