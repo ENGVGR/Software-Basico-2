@@ -3,6 +3,7 @@ SO utilizado: Linux
 Como compilar:
 
 Tradutor: g++ tradutor.cpp -o tradutor
+          ./tradutor teste.obj
 
 Alunos:
 
