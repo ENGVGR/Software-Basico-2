@@ -25,8 +25,8 @@ string final_text = "section .text\n"
                     "enter 0, 0                ; Salva o frame da pilha\n"
                     "pusha\n"
 
-                    ";mov eax, [ebp + 8]\n"
-                    ";mov eax, [eax]\n"
+                    "mov eax, [ebp + 8]\n"
+                    "mov eax, [eax]\n"
 
                     "mov ecx, 10                 ; Divisor para extração de dígitos (base 10)\n"
                     "lea esi, [buffer + 11]  ; Aponta para o final do buffer\n"
@@ -125,8 +125,6 @@ map<int, string> text;
 
 /* Endereço da label no assembly inventado, Nome da label  */
 map<int, string> labels_list = {};
-/* Endereço da label no ia-32, Nome da label */
-map<int, string> labels_list_end = {};
 
 /* Endereço de memória, Nome da variável */
 map<int, string> variable_list = {};
@@ -326,11 +324,13 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (labels_list.find(numbers[index]) != labels_list.end())
         {
-          text[contador] = "JB " + labels_list[numbers[index]] + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JB " + labels_list[numbers[index]] + "\n";
         }
         else
         {
-          text[contador] = "JB LABEL" + to_string(label_number) + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JB LABEL" + to_string(label_number) + "\n";
           labels_list[numbers[index]] = "LABEL" + to_string(label_number);
           label_number++;
         }
@@ -342,11 +342,13 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (labels_list.find(numbers[index]) != labels_list.end())
         {
-          text[contador] = "JA " + labels_list[numbers[index]] + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JA " + labels_list[numbers[index]] + "\n";
         }
         else
         {
-          text[contador] = "JA LABEL" + to_string(label_number) + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JA LABEL" + to_string(label_number) + "\n";
           labels_list[numbers[index]] = "LABEL" + to_string(label_number);
           label_number++;
         }
@@ -358,11 +360,13 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (labels_list.find(numbers[index]) != labels_list.end())
         {
-          text[contador] = "JE " + labels_list[numbers[index]] + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JE " + labels_list[numbers[index]] + "\n";
         }
         else
         {
-          text[contador] = "JE LABEL" + to_string(label_number) + "\n";
+          text[contador] = "CMP EAX, 0\n";
+          text[contador] += "JE LABEL" + to_string(label_number) + "\n";
           labels_list[numbers[index]] = "LABEL" + to_string(label_number);
           label_number++;
         }
@@ -389,8 +393,6 @@ void translator(string input_file_name, string output_file_name)
         {
           text[contador] += "MOV DWORD [" + to_string(numbers[index + 1]) + "], EDX\n";
         }
-
-        
         index++;
         contador += 3;
         break;
@@ -428,11 +430,11 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (variable_list.find(numbers[index]) != variable_list.end())
         {
-          text[contador] = "PUSH " + variable_list[numbers[index]] + "\ncall input\npop eax\n";
+          text[contador] = "PUSH " + variable_list[numbers[index]] + "\nCALL input\nPOP DWORD [" + variable_list[numbers[index]] + "]\n";
         }
         else
         {
-          text[contador] = "PUSH " + to_string(numbers[index]) + "\ncall input\npop eax\n";
+          text[contador] = "PUSH " + to_string(numbers[index]) + "\nCALL input\nPOP DWORD [" + variable_list[numbers[index]] + "]\n";
         }
         contador += 2;
         break;
@@ -442,11 +444,11 @@ void translator(string input_file_name, string output_file_name)
         index++;
         if (variable_list.find(numbers[index]) != variable_list.end())
         {
-          text[contador] = "PUSH " + variable_list[numbers[index]] + "\ncall output\npop eax\n";
+          text[contador] = "PUSH " + variable_list[numbers[index]] + "\nCALL output\nPOP ECX\n";
         }
         else
         {
-          text[contador] = "PUSH " + to_string(numbers[index]) + "\ncall output\npop eax\n";
+          text[contador] = "PUSH " + to_string(numbers[index]) + "\nCALL output\nPOP ECX\n";
         }
         contador += 2;
         break;
@@ -461,7 +463,6 @@ void translator(string input_file_name, string output_file_name)
       case 15:
         index++;
         index++;
-        text[contador] = "call s_input\n";
         contador += 3;
         break;
 
@@ -469,7 +470,6 @@ void translator(string input_file_name, string output_file_name)
       case 16:
         index++;
         index++;
-        text[contador] = "call s_output\n";
         contador += 3;
         break;
 
