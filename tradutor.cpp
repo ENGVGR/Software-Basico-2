@@ -11,7 +11,7 @@ using namespace std;
 
 map<int, string> instructions = {{1, "ADD"}, {2, "SUB"}, {3, "MUL"}, {4, "DIV"}, {5, "JMP"}, {6, "JMPN"}, {7, "JMPP"}, {8, "JMPZ"}, {9, "COPY"}, {10, "LOAD"}, {11, "STORE"}, {12, "INPUT"}, {13, "OUTPUT"}, {14, "STOP"}, {15, "S_INPUT"}, {16, "S_OUTPUT"}};
 
-string data = "section .data\n"
+string dat = "section .data\n"
               "overflow_msg db 'Erro: Overflow na multiplicacao!', 0xA\n"
               "overflow_len equ $ - overflow_msg\n"
               "buffer dd 0,0,0,0,0,0,0,0,0,0,0\n"
@@ -227,7 +227,7 @@ void translator(string input_file_name, string output_file_name)
       }
       else
       {
-        data += "LABEL" + to_string(label_number) + " dd " + to_string(current_number) + "\n";
+        dat += "LABEL" + to_string(label_number) + " dd " + to_string(current_number) + "\n";
       }
 
       index++;
@@ -513,7 +513,7 @@ void translator(string input_file_name, string output_file_name)
         "    MOV EBX, 0\n"
         "    INT 0x80\n";
 
-    output_file << data << endl;
+    output_file << dat << endl;
     output_file << bss << endl;
     output_file << final_text << endl;
 
